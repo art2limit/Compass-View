@@ -1,6 +1,5 @@
 package garin.artemiy.compassview.example;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -11,11 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import garin.artemiy.compassview.R;
+import garin.artemiy.compassview.library.CompassSensorsActivity;
 import garin.artemiy.compassview.library.CompassView;
 
 import java.util.UUID;
 
-public class MainActivity extends Activity {
+public class MainActivity extends CompassSensorsActivity {
 
     private static final double DELTA = 0.5;
 

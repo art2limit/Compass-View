@@ -50,7 +50,7 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
         sensorManager.unregisterListener(this, magneticFieldSensor);
     }
 
-    private void loadNewSensorData(SensorEvent event) {
+    private void loadSensorData(SensorEvent event) {
         int sensorType = event.sensor.getType();
         if (sensorType == Sensor.TYPE_ACCELEROMETER) {
             accelerometerData = event.values;
@@ -61,8 +61,7 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        loadNewSensorData(event);
+        loadSensorData(event);
         SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerData, magneticData);
         SensorManager.getOrientation(rotationMatrix, orientationData);
 
