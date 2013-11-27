@@ -8,14 +8,14 @@ You may import src from project (need delete example folder) or <a href="https:/
 <h2>Quick start</h2>
 — Extend your activity by **CompassSensorsActivity**, for example:
 
-```
+```java
 public class YourActivity extends CompassSensorsActivity {
     ...
 }
 ```
 
 — Write your view in xml:
-```
+```java
 <garin.artemiy.compassview.library.CompassView
     android:id="@+id/compassView"
     android:layout_height="wrap_content"
@@ -23,7 +23,7 @@ public class YourActivity extends CompassSensorsActivity {
 ```
 
 — In your adapter, or ordinary view you need initialize view:
-```
+```java
 CompassView compassView = (CompassView) view.findViewById(R.id.compassView);
 compassView.initializeCompass(userLocation, objectLocation, R.drawable.arrow);
 ```

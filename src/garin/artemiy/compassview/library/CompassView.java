@@ -20,18 +20,17 @@ import android.widget.ImageView;
  */
 public class CompassView extends ImageView {
 
-    private static final int FAST_ANIMATION_DURATION = 250;
-    private static final int SLOW_ANIMATION_DURATION = FAST_ANIMATION_DURATION * 3;
-    private static final float CENTER = 0.5f;
+    private static final int FAST_ANIMATION_DURATION = 200;
     private static final int DEGREES_360 = 360;
-    private static final int DEGREES_BIG = 260; // some value that prevents full (over ... degrees), fast rotate image
+
+    private static final float CENTER = 0.5f;
 
     private Context context;
     private Location userLocation;
     private Location objectLocation;
     private Bitmap directionBitmap;
-    private int drawableResource;
 
+    private int drawableResource;
     private float lastRotation;
 
     @SuppressWarnings("unused")
@@ -47,27 +46,30 @@ public class CompassView extends ImageView {
     }
 
     private void init(Context context) {
+        this.context = context;
+
         if (CompassUtility.isDeviceCompatible(context)) {
-            if (context instanceof FragmentActivity &&
-                    context instanceof CompassSensorsActivity) {
-                this.context = context;
-            } else {
+
+            if (!(context instanceof FragmentActivity &&
+                    context instanceof CompassSensorsActivity)) {
                 throw new RuntimeException("Your activity must extends from CompassSensorsActivity");
             }
+
         } else { // hide if device not compatible
             setVisibility(GONE);
         }
     }
 
     public void initializeCompass(Location userLocation, Location objectLocation, int drawableResource) {
-        this.userLocation = userLocation;
-        this.objectLocation = objectLocation;
-        this.drawableResource = drawableResource;
-        startRotation();
+        if (CompassUtility.isDeviceCompatible(context)) {
+            this.userLocation = userLocation;
+            this.objectLocation = objectLocation;
+            this.drawableResource = drawableResource;
+            startRotation();
+        }
     }
 
     private void startRotation() {
-
         GeomagneticField geomagneticField = new GeomagneticField(
                 (float) objectLocation.getLatitude(), (float) objectLocation.getLongitude(),
                 (float) objectLocation.getAltitude(), System.currentTimeMillis());
@@ -91,7 +93,6 @@ public class CompassView extends ImageView {
     }
 
     private void rotateImageView(ImageView compassView, int drawable, float currentRotate) {
-
         if (directionBitmap == null) {
 
             directionBitmap = BitmapFactory.decodeResource(getResources(), drawable);
@@ -102,13 +103,8 @@ public class CompassView extends ImageView {
             compassView.setScaleType(ScaleType.CENTER);
 
         } else {
-
             currentRotate = currentRotate % DEGREES_360;
             int animationDuration = FAST_ANIMATION_DURATION;
-
-            if (Math.abs(currentRotate - lastRotation) > DEGREES_BIG) {
-                animationDuration = SLOW_ANIMATION_DURATION;
-            }
 
             RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, currentRotate,
                     Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
