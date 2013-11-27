@@ -82,7 +82,7 @@ public class MainActivity extends CompassSensorsActivity {
             titleView.setText(UUID.randomUUID().toString());
 
             CompassView compassView = (CompassView) view.findViewById(R.id.compassView);
-            compassView.setLocation(userLocation, getItem(position));
+            compassView.initializeCompass(userLocation, getItem(position), R.drawable.arrow);
 
             return view;
         }

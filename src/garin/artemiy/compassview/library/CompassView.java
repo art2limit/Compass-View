@@ -14,7 +14,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import garin.artemiy.compassview.R;
 
 /**
  * Author: Artemiy Garin
@@ -22,12 +21,13 @@ import garin.artemiy.compassview.R;
  */
 public class CompassView extends ImageView {
 
-    private static final long ANIMATION_DURATION = 250;
+    private static final long ANIMATION_DURATION = 200;
 
+    private Context context;
     private Location userLocation;
     private Location objectLocation;
     private Bitmap directionBitmap;
-    private Context context;
+    private int drawableResource;
 
     private float lastRotation;
 
@@ -52,9 +52,10 @@ public class CompassView extends ImageView {
         }
     }
 
-    public void setLocation(Location userLocation, Location objectLocation) {
+    public void initializeCompass(Location userLocation, Location objectLocation, int drawableResource) {
         this.userLocation = userLocation;
         this.objectLocation = objectLocation;
+        this.drawableResource = drawableResource;
         startRotation();
     }
 
@@ -79,7 +80,7 @@ public class CompassView extends ImageView {
             rotation = rotation + 360;
         }
 
-        rotateImageView(this, R.drawable.arrow, rotation);
+        rotateImageView(this, drawableResource, rotation);
     }
 
     private void rotateImageView(ImageView compassView, int drawable, float currentRotate) {
@@ -96,6 +97,10 @@ public class CompassView extends ImageView {
         } else {
 
             currentRotate = currentRotate % 360;
+
+            if (Math.abs(lastRotation - currentRotate) > 260) {
+                currentRotate -= 360;
+            }
 
             RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, currentRotate,
                     Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
