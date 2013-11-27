@@ -22,7 +22,7 @@ import garin.artemiy.compassview.R;
  */
 public class CompassView extends ImageView {
 
-    private static final long ANIMATION_DURATION = 500;
+    private static final long ANIMATION_DURATION = 250;
 
     private Location userLocation;
     private Location objectLocation;
