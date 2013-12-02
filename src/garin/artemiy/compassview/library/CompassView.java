@@ -44,11 +44,15 @@ public class CompassView extends ImageView {
     }
 
     private void init(Context context) {
-        if (((Activity) context) instanceof FragmentActivity &&
-                ((FragmentActivity) context) instanceof CompassSensorsActivity) {
-            this.context = context;
-        } else {
-            throw new RuntimeException("Your activity must extends from CompassSensorsActivity");
+        if (CompassUtility.isDeviceCompatible(context)) {
+            if (((Activity) context) instanceof FragmentActivity &&
+                    ((FragmentActivity) context) instanceof CompassSensorsActivity) {
+                this.context = context;
+            } else {
+                throw new RuntimeException("Your activity must extends from CompassSensorsActivity");
+            }
+        } else { // hide if device not compatible
+            setVisibility(GONE);
         }
     }
 
