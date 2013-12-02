@@ -6,7 +6,7 @@ You may import src from project (need delete example folder) or <a href="https:/
 <br><br>
 
 <h2>Quick start</h2>
-— Extend your activity by CompassSensorsActivity, for example:
+— Extend your activity by **CompassSensorsActivity**, for example:
 
 ```
 public class YourActivity extends CompassSensorsActivity {
@@ -22,7 +22,7 @@ public class YourActivity extends CompassSensorsActivity {
     android:layout_width="wrap_content"/>
 ```
 
-— In your adapter, or ordinary view you need initialize:
+— In your adapter, or ordinary view you need initialize view:
 ```
 CompassView compassView = (CompassView) view.findViewById(R.id.compassView);
 compassView.initializeCompass(userLocation, objectLocation, R.drawable.arrow);
