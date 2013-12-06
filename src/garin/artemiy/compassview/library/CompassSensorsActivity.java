@@ -20,7 +20,7 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
     private Sensor accelerometerSensor;
     private Sensor magneticFieldSensor;
 
-    private float[] temporaryRotation = new float[9];
+    private float[] temporaryRotationMatrix = new float[9];
     private float[] rotationMatrix = new float[9];
     private float[] accelerometerData = new float[3];
     private float[] magneticData = new float[3];
@@ -66,7 +66,7 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
     public void onSensorChanged(SensorEvent event) {
         loadSensorData(event);
 
-        SensorManager.getRotationMatrix(temporaryRotation, null, accelerometerData, magneticData);
+        SensorManager.getRotationMatrix(temporaryRotationMatrix, null, accelerometerData, magneticData);
 
         configureDeviceAngle();
 
@@ -78,19 +78,19 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
     private void configureDeviceAngle() {
         switch (getWindowManager().getDefaultDisplay().getRotation()) {
             case Surface.ROTATION_0: // Portrait
-                SensorManager.remapCoordinateSystem(temporaryRotation, SensorManager.AXIS_Z,
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_Z,
                         SensorManager.AXIS_Y, rotationMatrix);
                 break;
             case Surface.ROTATION_90: // Landscape
-                SensorManager.remapCoordinateSystem(temporaryRotation, SensorManager.AXIS_Y,
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_Y,
                         SensorManager.AXIS_MINUS_Z, rotationMatrix);
                 break;
             case Surface.ROTATION_180: // Portrait
-                SensorManager.remapCoordinateSystem(temporaryRotation, SensorManager.AXIS_MINUS_Z,
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_MINUS_Z,
                         SensorManager.AXIS_MINUS_Y, rotationMatrix);
                 break;
             case Surface.ROTATION_270: // Landscape
-                SensorManager.remapCoordinateSystem(temporaryRotation, SensorManager.AXIS_MINUS_Y,
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_MINUS_Y,
                         SensorManager.AXIS_Z, rotationMatrix);
                 break;
         }

@@ -1,6 +1,5 @@
 package garin.artemiy.compassview.library;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +21,9 @@ import android.widget.ImageView;
 public class CompassView extends ImageView {
 
     private static final long ANIMATION_DURATION = 200;
+    private static final float CENTER = 0.5f;
+    private static final int DEGREES_360 = 360;
+    private static final int DEGREES_BIG = 260; // some value that prevents full (over ... degrees), fast rotate image
 
     private Context context;
     private Location userLocation;
@@ -45,8 +47,8 @@ public class CompassView extends ImageView {
 
     private void init(Context context) {
         if (CompassUtility.isDeviceCompatible(context)) {
-            if (((Activity) context) instanceof FragmentActivity &&
-                    ((FragmentActivity) context) instanceof CompassSensorsActivity) {
+            if (context instanceof FragmentActivity &&
+                    context instanceof CompassSensorsActivity) {
                 this.context = context;
             } else {
                 throw new RuntimeException("Your activity must extends from CompassSensorsActivity");
@@ -75,13 +77,13 @@ public class CompassView extends ImageView {
         float bearTo = objectLocation.bearingTo(userLocation);
 
         if (bearTo < 0) {
-            bearTo = bearTo + 360;
+            bearTo = bearTo + DEGREES_360;
         }
 
         float rotation = bearTo - azimuth;
 
         if (rotation < 0) {
-            rotation = rotation + 360;
+            rotation = rotation + DEGREES_360;
         }
 
         rotateImageView(this, drawableResource, rotation);
@@ -100,14 +102,16 @@ public class CompassView extends ImageView {
 
         } else {
 
-            currentRotate = currentRotate % 360;
+            currentRotate = currentRotate % DEGREES_360;
 
-            if (Math.abs(lastRotation - currentRotate) > 260) {
-                currentRotate -= 360;
+            int delta = (int) Math.abs(lastRotation - currentRotate);
+
+            if (delta > DEGREES_BIG && Math.abs(delta - DEGREES_360) < DEGREES_BIG) {
+                currentRotate -= DEGREES_360;
             }
 
             RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, currentRotate,
-                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
             rotateAnimation.setInterpolator(new LinearInterpolator());
             rotateAnimation.setDuration(ANIMATION_DURATION);
             rotateAnimation.setFillAfter(true);
