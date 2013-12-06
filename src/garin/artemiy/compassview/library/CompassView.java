@@ -20,7 +20,8 @@ import android.widget.ImageView;
  */
 public class CompassView extends ImageView {
 
-    private static final long ANIMATION_DURATION = 200;
+    private static final int FAST_ANIMATION_DURATION = 250;
+    private static final int SLOW_ANIMATION_DURATION = FAST_ANIMATION_DURATION * 3;
     private static final float CENTER = 0.5f;
     private static final int DEGREES_360 = 360;
     private static final int DEGREES_BIG = 260; // some value that prevents full (over ... degrees), fast rotate image
@@ -103,17 +104,16 @@ public class CompassView extends ImageView {
         } else {
 
             currentRotate = currentRotate % DEGREES_360;
+            int animationDuration = FAST_ANIMATION_DURATION;
 
-            int delta = (int) Math.abs(lastRotation - currentRotate);
-
-            if (delta > DEGREES_BIG && Math.abs(delta - DEGREES_360) < DEGREES_BIG) {
-                currentRotate -= DEGREES_360;
+            if (Math.abs(currentRotate - lastRotation) > DEGREES_BIG) {
+                animationDuration = SLOW_ANIMATION_DURATION;
             }
 
             RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, currentRotate,
                     Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
             rotateAnimation.setInterpolator(new LinearInterpolator());
-            rotateAnimation.setDuration(ANIMATION_DURATION);
+            rotateAnimation.setDuration(animationDuration);
             rotateAnimation.setFillAfter(true);
             rotateAnimation.setAnimationListener(new CustomAnimationListener());
 
