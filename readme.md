@@ -2,7 +2,7 @@
 <h3>Minimum SDK — 2.2+</h3>
 
 <h2>Screenshot</h2>
-![alt tag](http://i57.tinypic.com/208cvgo.png)
+![alt tag](http://i57.tinypic.com/osa61g.png)
 
 <h2>Install</h2>
 You may import src from project (need delete example folder) or <a href="https://github.com/kvirair/Compass-View-Library/releases">download jar</a> (recommended)
