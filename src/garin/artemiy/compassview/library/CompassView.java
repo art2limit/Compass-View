@@ -92,6 +92,7 @@ public class CompassView extends ImageView {
         rotateImageView(this, drawableResource, rotation);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void rotateImageView(ImageView compassView, int drawable, float currentRotate) {
         if (directionBitmap == null) {
 

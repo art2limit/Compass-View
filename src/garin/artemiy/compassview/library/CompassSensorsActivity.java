@@ -65,13 +65,11 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
     @Override
     public void onSensorChanged(SensorEvent event) {
         loadSensorData(event);
-
         SensorManager.getRotationMatrix(temporaryRotationMatrix, null, accelerometerData, magneticData);
 
         configureDeviceAngle();
 
         SensorManager.getOrientation(rotationMatrix, orientationData);
-
         azimuth = (float) Math.toDegrees(orientationData[0]);
     }
 

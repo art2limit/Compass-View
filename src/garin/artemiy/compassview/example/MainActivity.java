@@ -1,5 +1,6 @@
 package garin.artemiy.compassview.example;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -32,7 +33,12 @@ public class MainActivity extends CompassSensorsActivity {
         userLocation = getBestLastKnowLocation(locationManager);
         originObjectLocation = getBestLastKnowLocation(locationManager);
 
-        // Add test data
+        addTestData(objectAdapter);
+
+        ((ListView) findViewById(R.id.listView)).setAdapter(objectAdapter);
+    }
+
+    private void addTestData(ObjectAdapter objectAdapter) {
         Location testObject1 = getTestObject();
         testObject1.setLongitude(testObject1.getLongitude() - DELTA);
         testObject1.setLatitude(testObject1.getLatitude() - DELTA);
@@ -52,8 +58,6 @@ public class MainActivity extends CompassSensorsActivity {
         testObject4.setLongitude(testObject4.getLongitude() - DELTA);
         testObject4.setLatitude(testObject4.getLatitude() + DELTA);
         objectAdapter.add(testObject4);
-
-        ((ListView) findViewById(R.id.listView)).setAdapter(objectAdapter);
     }
 
     private Location getTestObject() {
@@ -69,37 +73,28 @@ public class MainActivity extends CompassSensorsActivity {
             super(context, R.layout.list_item_layout);
         }
 
+        @SuppressLint("InflateParams")
+        @SuppressWarnings("ConstantConditions")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view;
-            if (convertView != null) {
-                view = convertView;
-            } else {
-                view = getLayoutInflater().inflate(R.layout.list_item_layout, null);
-            }
+            if (convertView == null)
+                convertView = getLayoutInflater().inflate(R.layout.list_item_layout, null);
 
-            TextView titleView = (TextView) view.findViewById(R.id.titleView);
+            TextView titleView = (TextView) convertView.findViewById(R.id.titleView);
             titleView.setText(UUID.randomUUID().toString());
 
-            CompassView compassView = (CompassView) view.findViewById(R.id.compassView);
+            CompassView compassView = (CompassView) convertView.findViewById(R.id.compassView);
             compassView.initializeCompass(userLocation, getItem(position), R.drawable.arrow);
 
-            return view;
+            return convertView;
         }
 
     }
 
     private Location getBestLastKnowLocation(LocationManager locationManager) {
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-        if (location == null) {
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-
-        if (location == null) {
-            location = new Location("");
-        }
-
+        if (location == null) location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) location = new Location("");
         return location;
     }
 
