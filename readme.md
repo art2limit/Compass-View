@@ -1,4 +1,4 @@
-<h3>Version — 0.92, beta, not stable</h3>
+<h3>Version — 0.92, under slow development :)</h3>
 <h3>Minimum SDK — 2.2+</h3>
 
 <h2>Screenshot</h2>
