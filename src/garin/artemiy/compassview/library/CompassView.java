@@ -65,8 +65,8 @@ public class CompassView extends ImageView {
 
     private void startRotation() {
         GeomagneticField geomagneticField = new GeomagneticField(
-                (float) objectLocation.getLatitude(), (float) objectLocation.getLongitude(),
-                (float) objectLocation.getAltitude(), System.currentTimeMillis());
+                (float) userLocation.getLatitude(), (float) userLocation.getLongitude(),
+                (float) userLocation.getAltitude(), System.currentTimeMillis());
 
         float azimuth = ((CompassSensorsActivity) context).getAzimuth();
         azimuth -= geomagneticField.getDeclination();
