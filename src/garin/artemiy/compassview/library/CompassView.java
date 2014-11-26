@@ -49,15 +49,9 @@ public class CompassView extends ImageView {
         this.context = context;
 
         if (CompassUtility.isDeviceCompatible(context)) {
-
-            if (!(context instanceof FragmentActivity &&
-                    context instanceof CompassSensorsActivity)) {
+            if (!(context instanceof FragmentActivity && context instanceof CompassSensorsActivity))
                 throw new RuntimeException("Your activity must extends from CompassSensorsActivity");
-            }
-
-        } else { // hide if device not compatible
-            setVisibility(GONE);
-        }
+        } else setVisibility(GONE);
     }
 
     public void initializeCompass(Location userLocation, Location objectLocation, int drawableResource) {
@@ -77,17 +71,11 @@ public class CompassView extends ImageView {
         float azimuth = ((CompassSensorsActivity) context).getAzimuth();
         azimuth -= geomagneticField.getDeclination();
 
-        float bearTo = objectLocation.bearingTo(userLocation);
-
-        if (bearTo < 0) {
-            bearTo = bearTo + DEGREES_360;
-        }
+        float bearTo = userLocation.bearingTo(objectLocation);
+        if (bearTo < 0) bearTo = bearTo + DEGREES_360;
 
         float rotation = bearTo - azimuth;
-
-        if (rotation < 0) {
-            rotation = rotation + DEGREES_360;
-        }
+        if (rotation < 0) rotation = rotation + DEGREES_360;
 
         rotateImageView(this, drawableResource, rotation);
     }
