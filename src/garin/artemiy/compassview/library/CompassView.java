@@ -22,7 +22,6 @@ public class CompassView extends ImageView {
 
     private static final int FAST_ANIMATION_DURATION = 200;
     private static final int DEGREES_360 = 360;
-
     private static final float CENTER = 0.5f;
 
     private Context context;
