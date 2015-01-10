@@ -55,11 +55,8 @@ public class CompassSensorsActivity extends FragmentActivity implements SensorEv
 
     private void loadSensorData(SensorEvent event) {
         int sensorType = event.sensor.getType();
-        if (sensorType == Sensor.TYPE_ACCELEROMETER) {
-            accelerometerData = event.values;
-        } else if (sensorType == Sensor.TYPE_MAGNETIC_FIELD) {
-            magneticData = event.values;
-        }
+        if (sensorType == Sensor.TYPE_ACCELEROMETER) accelerometerData = event.values;
+        else if (sensorType == Sensor.TYPE_MAGNETIC_FIELD) magneticData = event.values;
     }
 
     @Override

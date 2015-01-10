@@ -105,7 +105,6 @@ public class CompassView extends ImageView {
 
             compassView.startAnimation(rotateAnimation);
         }
-
     }
 
     private class CustomAnimationListener implements Animation.AnimationListener {

@@ -26,7 +26,7 @@ public class MainActivity extends CompassSensorsActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_layout);
+        setContentView(R.layout.activity_main);
 
         ObjectAdapter objectAdapter = new ObjectAdapter(this);
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -70,7 +70,7 @@ public class MainActivity extends CompassSensorsActivity {
     private class ObjectAdapter extends ArrayAdapter<Location> {
 
         public ObjectAdapter(Context context) {
-            super(context, R.layout.list_item_layout);
+            super(context, R.layout.list_item);
         }
 
         @SuppressLint("InflateParams")
@@ -78,7 +78,7 @@ public class MainActivity extends CompassSensorsActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null)
-                convertView = getLayoutInflater().inflate(R.layout.list_item_layout, null);
+                convertView = getLayoutInflater().inflate(R.layout.list_item, null);
 
             TextView titleView = (TextView) convertView.findViewById(R.id.titleView);
             titleView.setText(UUID.randomUUID().toString());
