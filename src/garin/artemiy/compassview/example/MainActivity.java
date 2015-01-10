@@ -43,21 +43,6 @@ public class MainActivity extends CompassSensorsActivity {
         testObject1.setLongitude(testObject1.getLongitude() - DELTA);
         testObject1.setLatitude(testObject1.getLatitude() - DELTA);
         objectAdapter.add(testObject1);
-
-        Location testObject2 = getTestObject();
-        testObject2.setLongitude(testObject2.getLongitude() + DELTA);
-        testObject2.setLatitude(testObject2.getLatitude() + DELTA);
-        objectAdapter.add(testObject2);
-
-        Location testObject3 = getTestObject();
-        testObject3.setLongitude(testObject3.getLongitude() + DELTA);
-        testObject3.setLatitude(testObject3.getLatitude() - DELTA);
-        objectAdapter.add(testObject3);
-
-        Location testObject4 = getTestObject();
-        testObject4.setLongitude(testObject4.getLongitude() - DELTA);
-        testObject4.setLatitude(testObject4.getLatitude() + DELTA);
-        objectAdapter.add(testObject4);
     }
 
     private Location getTestObject() {

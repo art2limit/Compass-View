@@ -8,11 +8,13 @@ import android.hardware.GeomagneticField;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import garin.artemiy.compassview.BuildConfig;
 
 /**
  * Author: Artemiy Garin
@@ -77,6 +79,8 @@ public class CompassView extends ImageView {
         if (rotation < 0) rotation = rotation + DEGREES_360;
 
         rotateImageView(this, drawableResource, rotation);
+
+        if (BuildConfig.DEBUG) Log.d(CompassConstants.LOG_TAG, String.valueOf(rotation));
     }
 
     @SuppressWarnings("ConstantConditions")
