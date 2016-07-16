@@ -5,7 +5,7 @@
   android:layout_height="fill_parent"
   android:gravity="center_vertical"
 >
-  <garin.artemiy.compassview.library.CompassView
+  <garin.artemiy.compassview.library.widget.CompassView
     android:id="@+id/compassView"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
