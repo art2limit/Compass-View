@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import garin.artemiy.compassview.R;
 import garin.artemiy.compassview.library.CompassSensorsActivity;
 import garin.artemiy.compassview.library.CompassView;
-import java.util.UUID;
 
 public final class MainActivity
     extends CompassSensorsActivity
@@ -50,8 +48,10 @@ public final class MainActivity
         viewHolder = (ViewHolder) convertView.getTag();
       }
 
-      viewHolder.titleView.setText(UUID.randomUUID().toString());
-      viewHolder.compassView.initializeCompass(userLocation, getItem(position), R.drawable.arrow);
+      final Location item = getItem(position);
+
+      viewHolder.titleView.setText(item.getLatitude() + " - " + item.getLongitude());
+      viewHolder.compassView.initializeCompass(userLocation, item, R.drawable.arrow);
 
       return convertView;
     }
@@ -67,10 +67,6 @@ public final class MainActivity
 
   }
 
-  private static final double DELTA = 0.5;
-
-  private Location originObjectLocation;
-
   @Override
   public void onCreate(Bundle savedInstanceState)
   {
@@ -79,35 +75,18 @@ public final class MainActivity
 
     //Fake position : Paris
     final Location userLocation = new Location("");
-    userLocation.setLatitude(48.857257);
-    userLocation.setLongitude(2.333333);
+    userLocation.setLatitude(48.856353);
+    userLocation.setLongitude(2.354765);
 
     //Fake position : Brussels
-    originObjectLocation = new Location("");
-    originObjectLocation.setLatitude(50.850402);
-    originObjectLocation.setLongitude(4.349983);
+    final Location originObjectLocation = new Location("");
+    originObjectLocation.setLatitude(50.850169);
+    originObjectLocation.setLongitude(4.350014);
 
     final ObjectAdapter objectAdapter = new ObjectAdapter(this, userLocation);
-
-    addTestData(objectAdapter);
+    objectAdapter.add(originObjectLocation);
 
     ((ListView) findViewById(R.id.listView)).setAdapter(objectAdapter);
-  }
-
-  private void addTestData(ObjectAdapter objectAdapter)
-  {
-    final Location testObject1 = getTestObject();
-    testObject1.setLongitude(testObject1.getLongitude() - DELTA);
-    testObject1.setLatitude(testObject1.getLatitude() - DELTA);
-    objectAdapter.add(testObject1);
-  }
-
-  private Location getTestObject()
-  {
-    final Location objectLocation = new Location("");
-    objectLocation.setLatitude(originObjectLocation.getLatitude());
-    objectLocation.setLongitude(originObjectLocation.getLongitude());
-    return objectLocation;
   }
 
 }
