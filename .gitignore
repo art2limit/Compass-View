@@ -1,0 +1,45 @@
+# built application files
+*.apk
+*.ap_
+target/
+target-mvn/
+.gradle/
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+.m2apklib
+out/
+repository/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+.settings
+project.properties
+
+# Intellij/Android Studio files
+*.iml
+.idea/
+gen-external-apklibs/
+classes/
+
+# Backup files
+*.*~
+#*#
+temp/
+exported/
+imported/
+.DS_Store
+
+google-play-api-canalplus.json
