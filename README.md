@@ -2,7 +2,9 @@
 
 A simple compass view 3D you can integrate into your Android app.
 
-This version of the library has no additional dependencies, but requires Android v9+ to work.
+This version of the library has one dependency : `com.android.support:appcompat-v7:23.4.0`.
+
+This version of the library requires Android v9+ to work.
 
 ![Sample app screenshot](http://i57.tinypic.com/osa61g.png)
 
