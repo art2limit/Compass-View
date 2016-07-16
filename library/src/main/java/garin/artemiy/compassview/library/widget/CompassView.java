@@ -1,6 +1,7 @@
-package garin.artemiy.compassview.library;
+package garin.artemiy.compassview.library.widget;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import garin.artemiy.compassview.library.BuildConfig;
+import garin.artemiy.compassview.library.CompassSensorManager;
 
 /**
  * @author Artemiy Garin
@@ -24,7 +27,7 @@ public class CompassView
     implements Animation.AnimationListener
 {
 
-  public static final String LOG_TAG = "compass-logs";
+  private static final String TAG = CompassView.class.getSimpleName();
 
   private static final int FAST_ANIMATION_DURATION = 200;
 
@@ -44,6 +47,8 @@ public class CompassView
 
   private float lastRotation;
 
+  private CompassSensorManager compassSensorManager;
+
   @SuppressWarnings("unused")
   public CompassView(Context context)
   {
@@ -62,23 +67,18 @@ public class CompassView
   {
     this.context = context;
 
-    if (CompassUtility.isDeviceCompatible(context) == true)
-    {
-      if ((context instanceof CompassSensorsActivity) == false)
-      {
-        throw new RuntimeException("Your activity must extends from CompassSensorsActivity");
-      }
-    }
-    else
+    if (isDeviceCompatible(context) == false)
     {
       setVisibility(View.GONE);
     }
   }
 
-  public void initializeCompass(Location userLocation, Location objectLocation, int drawableResource)
+  public void initializeCompass(CompassSensorManager compassSensorManager, Location userLocation,
+      Location objectLocation, int drawableResource)
   {
-    if (CompassUtility.isDeviceCompatible(context) == true)
+    if (isDeviceCompatible(context) == true)
     {
+      this.compassSensorManager = compassSensorManager;
       this.userLocation = userLocation;
       this.objectLocation = objectLocation;
       this.drawableResource = drawableResource;
@@ -90,7 +90,7 @@ public class CompassView
   {
     final GeomagneticField geomagneticField = new GeomagneticField((float) userLocation.getLatitude(), (float) userLocation.getLongitude(), (float) userLocation.getAltitude(), System.currentTimeMillis());
 
-    float azimuth = ((CompassSensorsActivity) context).getAzimuth();
+    float azimuth = compassSensorManager.getAzimuth();
     azimuth -= geomagneticField.getDeclination();
 
     float bearTo = userLocation.bearingTo(objectLocation);
@@ -109,7 +109,7 @@ public class CompassView
 
     if (BuildConfig.DEBUG)
     {
-      Log.d(CompassView.LOG_TAG, String.valueOf(rotation));
+      Log.d(CompassView.TAG, String.valueOf(rotation));
     }
   }
 
@@ -159,4 +159,10 @@ public class CompassView
   {
 
   }
+
+  public static boolean isDeviceCompatible(Context context)
+  {
+    return context.getPackageManager() != null && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER) == true && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS) == true;
+  }
+
 }
