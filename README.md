@@ -70,7 +70,7 @@ Alternatively, you can add one to your activities or fragments. **Warning :** yo
 For an `Activity` :
 
 ```java
-public class MyActivity
+public final class MyActivity
     extends AppCompatActivity
 {
 
@@ -104,7 +104,7 @@ public class MyActivity
 For a `Fragment` :
 
 ```java
-public class MyFragment
+public final class MyFragment
     extends Fragment
 {
 
