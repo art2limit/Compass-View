@@ -1,0 +1,8 @@
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  package="garin.artemiy.compassview.library"
+>
+  <application
+    android:allowBackup="true"
+  />
+</manifest>
