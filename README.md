@@ -27,6 +27,20 @@ Library releases are not available on Maven Central or JCenter but you can gener
 gradle clean library:assembleRelease
 ```
 
+or
+
+```console
+gradle -b library/build.gradle clean assembleRelease
+```
+
+### Generate a jar file
+
+If you prefer a jar file instead of an aar file, you can also generate an it by your owned :
+
+```console
+gradle -b library/build.gradle clean assembleRelease makeJar
+```
+
 ### Layout
 
 You need to declare the `CompassView` directly into your layout.
