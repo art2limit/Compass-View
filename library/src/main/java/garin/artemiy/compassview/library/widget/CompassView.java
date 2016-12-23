@@ -130,7 +130,9 @@ public class CompassView
       currentRotate = currentRotate % DEGREES_360;
       int animationDuration = FAST_ANIMATION_DURATION;
 
-      final RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, currentRotate, Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
+      float animToDegree = getShortestPathEndPoint(lastRotation, currentRotate);
+
+      final RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, animToDegree, Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
       rotateAnimation.setInterpolator(new LinearInterpolator());
       rotateAnimation.setDuration(animationDuration);
       rotateAnimation.setFillAfter(true);
@@ -140,6 +142,54 @@ public class CompassView
 
       compassView.startAnimation(rotateAnimation);
     }
+  }
+
+  /**
+   * Computes the shortest path delta for reaching the same "end" degree by looking both direction around a circle. For example, rather than traveling from degree 0 to 355 around a circle, it would be shorter to go from degree 0 to -5.
+   * @param start
+   * @param end
+   * @return An updated "end" degree that's based on the shortest path to reach it.
+   */
+  private float getShortestPathEndPoint(float start, float end) {
+    float delta = deltaRotation(start, end);
+    float invertedDelta = invertedDelta(start, end);
+
+    if (Math.abs(invertedDelta) < Math.abs(delta)) {
+      end = start + invertedDelta;
+    }
+
+    return end;
+  }
+
+  /**
+   * Calculates the standard delta (end - start). Note: This is how the delta is calculated by the RotateAnimation()
+   * @param start
+   * @param end
+   * @return The value of (end - start)
+   */
+  private float deltaRotation(float start, float end) {
+    return end - start;
+  }
+
+  /**
+   *
+   * @param start the starting degree
+   * @param end the ending degree
+   * @return Rather than calculating a standard delta (end - start), this function calculates the distance it would take to reach "end" going the opposite direction around a circle.
+   */
+  private float invertedDelta(float start, float end) {
+    final float delta = end - start;
+    //adjust "end" so that we go the opposite direction around the circle
+    if (delta < 0) {
+      //delta is going backwards, so lets adjust "end" to go forward
+      end += DEGREES_360;
+    } else {
+      //delta is going forwards, so lets adjust "end" to go backward
+      end += -DEGREES_360;
+    }
+
+    //calculate and return the delta going the opposite direction
+    return end - start;
   }
 
   @Override
