@@ -8,15 +8,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.hardware.GeomagneticField;
 import android.location.Location;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
-public class CompassView extends ImageView implements Animation.AnimationListener {
+public class CompassView extends ImageView {
 
     private static final int FAST_ANIMATION_DURATION = 200;
     private static final int DEGREES_360 = 360;
@@ -43,30 +41,24 @@ public class CompassView extends ImageView implements Animation.AnimationListene
 
     public void init(CompassSensorManager compassSensorManager, Location userLocation,
                      Location objectLocation, int drawableResource) {
-        if (isDeviceCompatible(getContext())) {
             this.compassSensorManager = compassSensorManager;
             this.userLocation = userLocation;
             this.objectLocation = objectLocation;
             this.drawableResource = drawableResource;
             startRotation();
-        }
     }
 
     private void startRotation() {
-        final GeomagneticField geomagneticField = new GeomagneticField((float) userLocation.getLatitude(), (float) userLocation.getLongitude(), (float) userLocation.getAltitude(), System.currentTimeMillis());
+        GeomagneticField geomagneticField = new GeomagneticField((float) userLocation.getLatitude(), (float) userLocation.getLongitude(), (float) userLocation.getAltitude(), System.currentTimeMillis());
 
         float azimuth = compassSensorManager.getAzimuth();
         azimuth -= geomagneticField.getDeclination();
 
         float bearTo = userLocation.bearingTo(objectLocation);
-        if (bearTo < 0) {
-            bearTo = bearTo + DEGREES_360;
-        }
+        if (bearTo < 0)  bearTo = bearTo + DEGREES_360;
 
         float rotation = bearTo - azimuth;
-        if (rotation < 0) {
-            rotation = rotation + DEGREES_360;
-        }
+        if (rotation < 0)   rotation = rotation + DEGREES_360;
 
         rotateImageView(this, drawableResource, rotation);
     }
@@ -75,21 +67,16 @@ public class CompassView extends ImageView implements Animation.AnimationListene
     private void rotateImageView(ImageView compassView, int drawable, float currentRotate) {
         if (directionBitmap == null) {
             directionBitmap = BitmapFactory.decodeResource(getResources(), drawable);
-            final Animation fadeInAnimation = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
-            fadeInAnimation.setAnimationListener(this);
-            compassView.startAnimation(fadeInAnimation);
             compassView.setImageDrawable(new BitmapDrawable(getResources(), directionBitmap));
             compassView.setScaleType(ScaleType.CENTER);
         } else {
             currentRotate = currentRotate % DEGREES_360;
-
             float animToDegree = getShortestPathEndPoint(lastRotation, currentRotate);
 
             final RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, animToDegree, Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
             rotateAnimation.setInterpolator(new LinearInterpolator());
             rotateAnimation.setDuration(FAST_ANIMATION_DURATION);
             rotateAnimation.setFillAfter(true);
-            rotateAnimation.setAnimationListener(this);
 
             lastRotation = currentRotate;
 
@@ -115,24 +102,9 @@ public class CompassView extends ImageView implements Animation.AnimationListene
     private float invertedDelta(float start, float end) {
         final float delta = end - start;
         if (delta < 0) end += DEGREES_360;
-         else   end += -DEGREES_360;
+        else end += -DEGREES_360;
 
         return end - start;
-    }
-
-    @Override
-    public void onAnimationStart(Animation animation) {
-
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        startRotation();
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
     }
 
     public static boolean isDeviceCompatible(Context context) {

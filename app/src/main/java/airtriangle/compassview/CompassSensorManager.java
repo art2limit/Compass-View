@@ -1,6 +1,5 @@
 package airtriangle.compassview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -19,11 +18,11 @@ public class CompassSensorManager implements SensorEventListener {
     private final float[] temporaryRotationMatrix = new float[9];
     private final float[] rotationMatrix = new float[9];
     private final float[] orientationData = new float[3];
-    private  float[] accelerometerData = new float[3];
-    private  float[] magneticData = new float[3];
+    private float[] accelerometerData = new float[3];
+    private float[] magneticData = new float[3];
     private float azimuth;
 
-    public CompassSensorManager(Activity context) {
+    public CompassSensorManager(Context context) {
         windowManager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -75,7 +74,7 @@ public class CompassSensorManager implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    public float getAzimuth() {
+    float getAzimuth() {
         return azimuth;
     }
 
