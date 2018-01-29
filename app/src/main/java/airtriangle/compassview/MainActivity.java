@@ -4,15 +4,17 @@ import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 
-import compassview.airtriangle.aircompassview.R;
+import compassview.airtriangle.R;
 
 public class MainActivity extends Activity {
+
+    private CompassSensorManager compassSensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CompassSensorManager compassSensorManager = new CompassSensorManager(this);
+        compassSensorManager = new CompassSensorManager(this);
 
         Location moscowLocation = new Location("");
         moscowLocation.setLatitude(55.751244);
@@ -23,7 +25,19 @@ public class MainActivity extends Activity {
         krakowLocation.setLongitude(19.9449799);
 
         CompassView compassView = findViewById(R.id.compassView);
-        compassView.init(compassSensorManager,moscowLocation,krakowLocation,R.drawable.ic_launcher_foreground);
+        compassView.init(compassSensorManager, moscowLocation, krakowLocation, R.drawable.ic_launcher_foreground);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        compassSensorManager.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        compassSensorManager.onPause();
     }
 
 }
