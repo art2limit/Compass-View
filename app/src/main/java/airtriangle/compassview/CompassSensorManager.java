@@ -7,32 +7,25 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.view.Surface;
+import android.view.WindowManager;
 
 public class CompassSensorManager implements SensorEventListener {
 
-    private final Activity activity;
-
-    private final SensorManager sensorManager;
-
+    private WindowManager windowManager;
+    private SensorManager sensorManager;
     private Sensor accelerometerSensor;
-
     private Sensor magneticFieldSensor;
 
     private final float[] temporaryRotationMatrix = new float[9];
-
     private final float[] rotationMatrix = new float[9];
-
-    private float[] accelerometerData = new float[3];
-
-    private float[] magneticData = new float[3];
-
     private final float[] orientationData = new float[3];
-
+    private  float[] accelerometerData = new float[3];
+    private  float[] magneticData = new float[3];
     private float azimuth;
 
-    public CompassSensorManager(Activity activity) {
-        this.activity = activity;
-        sensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
+    public CompassSensorManager(Activity context) {
+        windowManager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
@@ -47,33 +40,6 @@ public class CompassSensorManager implements SensorEventListener {
         sensorManager.unregisterListener(this, magneticFieldSensor);
     }
 
-    private void loadSensorData(SensorEvent event) {
-        final int sensorType = event.sensor.getType();
-
-        if (sensorType == Sensor.TYPE_ACCELEROMETER) {
-            accelerometerData = event.values;
-        } else if (sensorType == Sensor.TYPE_MAGNETIC_FIELD) {
-            magneticData = event.values;
-        }
-    }
-
-    private void configureDeviceAngle() {
-        switch (activity.getWindowManager().getDefaultDisplay().getRotation()) {
-            case Surface.ROTATION_0: // Portrait
-                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_Z, SensorManager.AXIS_Y, rotationMatrix);
-                break;
-            case Surface.ROTATION_90: // Landscape
-                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_Z, rotationMatrix);
-                break;
-            case Surface.ROTATION_180: // Portrait
-                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_MINUS_Z, SensorManager.AXIS_MINUS_Y, rotationMatrix);
-                break;
-            case Surface.ROTATION_270: // Landscape
-               SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_MINUS_Y, SensorManager.AXIS_Z, rotationMatrix);
-                break;
-        }
-    }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         loadSensorData(event);
@@ -85,9 +51,35 @@ public class CompassSensorManager implements SensorEventListener {
         azimuth = (float) Math.toDegrees(orientationData[0]);
     }
 
+    private void loadSensorData(SensorEvent event) {
+        final int sensorType = event.sensor.getType();
+
+        if (sensorType == Sensor.TYPE_ACCELEROMETER) {
+            accelerometerData = event.values;
+        } else if (sensorType == Sensor.TYPE_MAGNETIC_FIELD) {
+            magneticData = event.values;
+        }
+    }
+
+    private void configureDeviceAngle() {
+        switch (windowManager.getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_0: // Portrait
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_Z, SensorManager.AXIS_Y, rotationMatrix);
+                break;
+            case Surface.ROTATION_90: // Landscape
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_Z, rotationMatrix);
+                break;
+            case Surface.ROTATION_180: // Portrait
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_MINUS_Z, SensorManager.AXIS_MINUS_Y, rotationMatrix);
+                break;
+            case Surface.ROTATION_270: // Landscape
+                SensorManager.remapCoordinateSystem(temporaryRotationMatrix, SensorManager.AXIS_MINUS_Y, SensorManager.AXIS_Z, rotationMatrix);
+                break;
+        }
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     public float getAzimuth() {
