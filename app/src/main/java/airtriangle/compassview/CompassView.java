@@ -62,8 +62,8 @@ public class CompassView extends ImageView implements Animation.AnimationListene
         }
     }
 
-    public void initializeCompass(CompassSensorManager compassSensorManager, Location userLocation,
-                                  Location objectLocation, int drawableResource) {
+    public void init(CompassSensorManager compassSensorManager, Location userLocation,
+                     Location objectLocation, int drawableResource) {
         if (isDeviceCompatible(context) == true) {
             this.compassSensorManager = compassSensorManager;
             this.userLocation = userLocation;
