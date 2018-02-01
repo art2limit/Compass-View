@@ -9,6 +9,8 @@ import android.hardware.SensorManager;
 import android.view.Surface;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+
 public class CompassSensorManager implements SensorEventListener {
 
     private WindowManager windowManager;
@@ -22,6 +24,9 @@ public class CompassSensorManager implements SensorEventListener {
     private float[] accelerometerData = new float[3];
     private float[] magneticData = new float[3];
     private float azimuth;
+    private boolean isSuspended = true;
+
+    private ArrayList<CompassModeCallback> compassModeCallbacks = new ArrayList<>();
 
     public CompassSensorManager(Context context) {
         windowManager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
@@ -31,11 +36,16 @@ public class CompassSensorManager implements SensorEventListener {
     }
 
     public void onResume() {
-        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI);
-        sensorManager.registerListener(this, magneticFieldSensor, SensorManager.SENSOR_DELAY_UI);
+        isSuspended = false;
+        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        for (CompassModeCallback compassModeCallback : compassModeCallbacks)
+            compassModeCallback.start();
     }
 
     public void onPause() {
+        isSuspended = true;
         sensorManager.unregisterListener(this, accelerometerSensor);
         sensorManager.unregisterListener(this, magneticFieldSensor);
     }
@@ -85,6 +95,14 @@ public class CompassSensorManager implements SensorEventListener {
         return context.getPackageManager() != null
                 && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER)
                 && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS);
+    }
+
+    boolean isSuspended() {
+        return isSuspended;
+    }
+
+    void addCompassCallback(CompassModeCallback compassModeCallback) {
+        compassModeCallbacks.add(compassModeCallback);
     }
 
 }
