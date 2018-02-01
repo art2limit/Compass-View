@@ -1,6 +1,7 @@
 package sky2limit.compassview;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -78,6 +79,12 @@ public class CompassSensorManager implements SensorEventListener {
 
     float getAzimuth() {
         return azimuth;
+    }
+
+    public static boolean isDeviceCompatible(Context context) {
+        return context.getPackageManager() != null
+                && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER)
+                && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS);
     }
 
 }

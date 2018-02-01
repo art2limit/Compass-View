@@ -26,6 +26,13 @@ public class CompassView extends ImageView {
     private float lastRotation;
     private CompassSensorManager compassSensorManager;
 
+    private final Runnable startRotationRunnable = new Runnable() {
+        @Override
+        public void run() {
+            startRotation();
+        }
+    };
+
     public CompassView(Context context) {
         super(context);
     }
@@ -64,6 +71,8 @@ public class CompassView extends ImageView {
         if (rotation < 0)   rotation = rotation + DEGREES_360;
 
         rotateImageView(this, drawableResource, rotation);
+
+        post(startRotationRunnable);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -104,12 +113,6 @@ public class CompassView extends ImageView {
         if (delta < 0) end += DEGREES_360;
         else end += -DEGREES_360;
         return end - start;
-    }
-
-    public static boolean isDeviceCompatible(Context context) {
-        return context.getPackageManager() != null
-                && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER)
-                && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS);
     }
 
 }
