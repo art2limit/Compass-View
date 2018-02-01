@@ -44,6 +44,7 @@ public class CompassView extends ImageView {
             this.userLocation = userLocation;
             this.objectLocation = objectLocation;
             this.drawableResource = drawableResource;
+
             startRotation();
     }
 
@@ -75,7 +76,8 @@ public class CompassView extends ImageView {
             currentRotate = currentRotate % DEGREES_360;
             float animToDegree = getShortestPathEndPoint(lastRotation, currentRotate);
 
-            final RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, animToDegree, Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
+            final RotateAnimation rotateAnimation = new RotateAnimation(lastRotation, animToDegree,
+                    Animation.RELATIVE_TO_SELF, CENTER, Animation.RELATIVE_TO_SELF, CENTER);
             rotateAnimation.setInterpolator(new LinearInterpolator());
             rotateAnimation.setDuration(FAST_ANIMATION_DURATION);
             rotateAnimation.setFillAfter(true);
@@ -98,7 +100,7 @@ public class CompassView extends ImageView {
     }
 
     private float invertedDelta(float start, float end) {
-        final float delta = end - start;
+        float delta = end - start;
         if (delta < 0) end += DEGREES_360;
         else end += -DEGREES_360;
         return end - start;

@@ -47,10 +47,12 @@ public class CompassSensorManager implements SensorEventListener {
         else if (sensorType == Sensor.TYPE_MAGNETIC_FIELD)
             magneticData = event.values;
 
-        SensorManager.getRotationMatrix(temporaryRotationMatrix, null, accelerometerData, magneticData);
-        configureDeviceAngle();
-        SensorManager.getOrientation(rotationMatrix, orientationData);
-        azimuth = (float) Math.toDegrees(orientationData[0]);
+        if (accelerometerData != null && magneticData != null) {
+            SensorManager.getRotationMatrix(temporaryRotationMatrix, null, accelerometerData, magneticData);
+            configureDeviceAngle();
+            SensorManager.getOrientation(rotationMatrix, orientationData);
+            azimuth = (float) Math.toDegrees(orientationData[0]);
+        }
     }
 
     private void configureDeviceAngle() {
