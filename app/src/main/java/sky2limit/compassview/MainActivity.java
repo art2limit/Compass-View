@@ -1,11 +1,9 @@
-package airtriangle.compassview;
+package sky2limit.compassview;
 
 import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-
-import compassview.airtriangle.R;
 
 public class MainActivity extends Activity {
 

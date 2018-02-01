@@ -1,4 +1,4 @@
-package airtriangle.compassview;
+package sky2limit.compassview;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -9,7 +9,6 @@ import android.hardware.GeomagneticField;
 import android.location.Location;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -49,7 +48,10 @@ public class CompassView extends ImageView {
     }
 
     private void startRotation() {
-        GeomagneticField geomagneticField = new GeomagneticField((float) userLocation.getLatitude(), (float) userLocation.getLongitude(), (float) userLocation.getAltitude(), System.currentTimeMillis());
+        GeomagneticField geomagneticField = new GeomagneticField(
+                (float) userLocation.getLatitude(),
+                (float) userLocation.getLongitude(),
+                (float) userLocation.getAltitude(), System.currentTimeMillis());
 
         float azimuth = compassSensorManager.getAzimuth();
         azimuth -= geomagneticField.getDeclination();
@@ -87,11 +89,7 @@ public class CompassView extends ImageView {
     private float getShortestPathEndPoint(float start, float end) {
         float delta = deltaRotation(start, end);
         float invertedDelta = invertedDelta(start, end);
-
-        if (Math.abs(invertedDelta) < Math.abs(delta)) {
-            end = start + invertedDelta;
-        }
-
+        if (Math.abs(invertedDelta) < Math.abs(delta))  end = start + invertedDelta;
         return end;
     }
 
@@ -103,7 +101,6 @@ public class CompassView extends ImageView {
         final float delta = end - start;
         if (delta < 0) end += DEGREES_360;
         else end += -DEGREES_360;
-
         return end - start;
     }
 

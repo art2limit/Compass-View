@@ -1,4 +1,4 @@
-package airtriangle.compassview;
+package sky2limit.compassview;
 
 import android.content.Context;
 import android.hardware.Sensor;
