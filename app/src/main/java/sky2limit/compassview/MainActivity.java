@@ -5,6 +5,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
+import sky2limit.compassview.lib.CompassSensorManager;
+import sky2limit.compassview.lib.CompassView;
+
 public class MainActivity extends Activity {
 
     private static final int GRID_SIZE = 10;

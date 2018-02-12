@@ -1,4 +1,4 @@
-package sky2limit.compassview;
+package sky2limit.compassview.lib;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
