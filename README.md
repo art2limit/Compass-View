@@ -3,4 +3,7 @@
 ## Screen-gifs
 ![](static/arrows-preview.gif)
 
+## Important
+For correct library working arrow should be see straight up like this ![](app/src/main/res/drawable-xxhdpi/icon_arrow.png)
+
 ## Import
