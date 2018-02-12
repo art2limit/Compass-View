@@ -4,6 +4,32 @@
 ![](static/arrows-preview.gif)
 
 ## Important
-For correct library working arrow should be see straight up like this ![](app/src/main/res/drawable-xxhdpi/icon_arrow.png)
+For correct library working arrow should be see straight up like this ⬆
 
 ## Import
+In your activity or fragment init `CompassSensorManager` and create `CompassView` like this:
+```java
+    private CompassSensorManager compassSensorManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        compassSensorManager = new CompassSensorManager(this);
+
+        CompassView compassView = new CompassView(this);
+        compassView.init(compassSensorManager, location1, location2, R.drawable.icon_arrow);
+    }
+
+    @Override
+    protected void onResume() {
+        ...
+        compassSensorManager.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        ...
+        compassSensorManager.onPause();
+    }
+```
+Don't forget call onResume and onPause, if you don't battery will be cry.
