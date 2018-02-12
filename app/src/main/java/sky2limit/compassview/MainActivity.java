@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
         krakowLocation.setLongitude(19.9449799);
 
         CompassView compassView = new CompassView(this);
-        compassView.init(compassSensorManager, moscowLocation, krakowLocation, R.drawable.ic_action_name);
+        compassView.init(compassSensorManager, moscowLocation, krakowLocation, R.drawable.icon_arrow);
         return compassView;
     }
 
