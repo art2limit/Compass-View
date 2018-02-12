@@ -7,6 +7,18 @@
 For correct library working arrow should be see straight up like this ⬆
 
 ## Import
+Dependency injected via gradle (jitpack), add in your build.gradle:
+```
+   repositories {
+        maven { url "https://jitpack.io" }
+   }
+
+   dependencies {
+         compile 'com.github.art2limit:Compass-View:1.0.0'
+   }
+```
+
+
 In your activity or fragment init `CompassSensorManager` and create `CompassView` like this:
 ```java
     private CompassSensorManager compassSensorManager;
