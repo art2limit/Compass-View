@@ -7,15 +7,20 @@
 For correct library working arrow should be see straight up like this ⬆
 
 ## Import
-Dependency injected via gradle (jitpack), add in your build.gradle:
+Add it in your root build.gradle at the end of repositories:
 ```
-   repositories {
-        maven { url "https://jitpack.io" }
-   }
-
-   dependencies {
-         compile 'com.github.art2limit:Compass-View:1.0.0'
-   }
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+And on module build.gradle
+```
+dependencies {
+	    compile 'com.github.art2limit:Compass-View:1.0.3'
+	}
 ```
 
 
